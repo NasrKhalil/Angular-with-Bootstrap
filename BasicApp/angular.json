@@ -1,0 +1,144 @@
+
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "ang1": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/ang1",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              // "src/styles.scss"
+            ],
+
+            "scripts": [
+              "./node_modules/jquery/dist/jquery.slim.min.js",
+              "./node_modules/popper.js/dist/umd/popper.min.js",
+              "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ],
+            // "es5BrowserSupport": false // removed es5BrowserSupport as it is not allowed in the root level
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumError": "500kb",
+                  "maximumWarning": "2mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumError": "10kb",
+                  "maximumWarning": "5kb"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaults": {
+            "stylePreprocessorOptions": {
+              "includeResources": /\.(m?)css$/,
+              "paths": ["../node_modules"]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "ang1:build:production"
+            },
+            "development": {
+              "buildTarget": "ang1:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:template-parser",
+          "options": {
+            "exclude": ["./*/**/.+(spec|e2e)..ts"]
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "files": [
+              "src/test.ts",
+              "src/**/*.spec.ts"
+            ],
+            "testBed": "/angular.json",
+            "animations": false,
+            "coverageIstanbulReportDirectory": "coverage",
+            "reporters": ["progress"],
+            "port": 9875,
+            "browserNoSandbox": true,
+            "watch": false,
+            "singleRun": false,
+            "autoWatch": true
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./e2e.conf.js",
+            "args": ["--baseUrl", "/", "--target=chrome"]
+          },
+          "configurations": {
+            "chromeHeadless": {
+              "flags": {
+                "webSecurityEnabled": false
+              }
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "locales": ["de", "en"],
+            "sourceInputFileRegExp": /\.ts(\?.*)?$/,
+            "outputPath": "src/locale"
+          }
+        }
+      }
+    }
+  }
+}
